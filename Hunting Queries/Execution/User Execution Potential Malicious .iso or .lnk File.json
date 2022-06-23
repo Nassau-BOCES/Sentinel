@@ -73,7 +73,7 @@
                         "fieldMappings": [
                             {
                                 "identifier": "Name",
-                                "columnName": "InitiatingProcessFolderPath"
+                                "columnName": "FolderPath"
                             }
                         ]
                     }
