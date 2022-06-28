@@ -18,7 +18,7 @@
                 "description": "",
                 "severity": "Medium",
                 "enabled": true,
-                "query": "// Common Powershell Script Execution \nDeviceProcessEvents\n| where InitiatingProcessCommandLine contains \"-ExecutionPolicy Bypass\" or InitiatingProcessCommandLine contains \"-WindowStyle Hidden\"\n// whitelist\n| where InitiatingProcessParentFileName <> \"AgentExecutor.exe\" // Intune Agent\n| where InitiatingProcessParentFileName <> \"SenseIR.exe\" // Defender Process\n| where InitiatingProcessCommandLine !contains \"Windows Defender Advanced Threat Protection\" // Unicast Scanner Defender\n| where InitiatingProcessCommandLine <> @\"powershell.exe -ExecutionPolicy ByPass C:\\PCBP\\wir_rdr_vmtools.ps1\"\n| where InitiatingProcessCommandLine <> @\" -ExecutionPolicy ByPass -File \\\\nbw.tld\\SYSVOL\\NBW.tld\\scripts\\TeamFirewallScript.ps1 \"\n| where InitiatingProcessCommandLine !contains \"WACScheduledTaskScript.ps1\" // admin center process whitelist\n| distinct InitiatingProcessCommandLine, DeviceName, AccountName, InitiatingProcessParentFileName",
+                "query": "DeviceProcessEvents\n| where InitiatingProcessCommandLine contains \"-ExecutionPolicy Bypass\" or InitiatingProcessCommandLine contains \"-WindowStyle Hidden\"\n// whitelist\n| where InitiatingProcessParentFileName <> \"AgentExecutor.exe\" // Intune Agent\n| where InitiatingProcessParentFileName <> \"SenseIR.exe\" // Defender Process\n| where InitiatingProcessCommandLine !contains \"Windows Defender Advanced Threat Protection\" // Unicast Scanner Defender\n| where InitiatingProcessCommandLine <> @\"powershell.exe -ExecutionPolicy ByPass C:\\PCBP\\wir_rdr_vmtools.ps1\"\n| where InitiatingProcessCommandLine <> @\" -ExecutionPolicy ByPass -File \\\\nbw.tld\\SYSVOL\\NBW.tld\\scripts\\TeamFirewallScript.ps1 \"\n| where InitiatingProcessCommandLine !contains \"WACScheduledTaskScript.ps1\" // admin center process whitelist\n| where InitiatingProcessCommandLine <> \"powershell -NoProfile -NonInteractive -WindowStyle Hidden \\\"Restart-Service -Force -Name PCPrintProvider\\\"\" and InitiatingProcessParentFileName <> \"updater.exe\" // Papercut updater \n| distinct\n    InitiatingProcessCommandLine,\n    DeviceName,\n    AccountName,\n    InitiatingProcessParentFileName\n",
                 "queryFrequency": "PT1H",
                 "queryPeriod": "PT1H30M",
                 "triggerOperator": "GreaterThan",
@@ -86,7 +86,8 @@
                             }
                         ]
                     }
-                ]
+                ],
+                "sentinelEntitiesMappings": null
             }
         }
     ]
